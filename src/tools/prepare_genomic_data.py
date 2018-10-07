@@ -36,7 +36,7 @@ def get_cna_table(cna_file, debug=False):
 
 def get_oncoKB_table(variant_file, debug):
     oncoKB_dict = {}
-    with open(variant_file, encoding = "ISO-8859-1") as f:
+    with open(variant_file) as f:
         header = f.readline()
         if debug:
             for idx, val in enumerate(header.strip().split("\t")):

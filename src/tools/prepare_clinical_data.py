@@ -44,7 +44,7 @@ def prepare_sample_data(args):
     if args.debug:
         print (p_dic)
 
-    with open(args.out_file, 'w') as of, open(args.sample_file) as sf:
+    with open(args.output, 'w') as of, open(args.sample_file) as sf:
         if args.debug:
             for line in sf.readlines()[4:5]:
                 parts = line.strip().split("\t")
@@ -53,27 +53,26 @@ def prepare_sample_data(args):
         of.write('SAMPLE_ID,ORD_PHYSICIAN_NAME,ORD_PHYSICIAN_EMAIL,ONCOTREE_PRIMARY_DIAGNOSIS_NAME,CANCER_TYPE,REPORT_DATE,' +
                     'BIRTH_DATE,AGE,GENDER,ETHNICITY,VITAL_STATUS,ER_STATUS,PR_STATUS,HER2_STATUS,CENTRE,PATIENT_ID,DFCI_MRN\n')
         count = 1
-        for line1 in sf.readlines()[5:]:
-            items1 = line1.strip().split("\t")
+        for line in sf.readlines()[5:]:
+            items = line.strip().split("\t")
             if args.debug:
-                print (items1)
+                print (items)
                 for idx, val in enumerate(parts):
                     print (idx, val)
-            if items1[6] and items1[6] != "NA": #11/7/2017
-                d_parts = items1[6].split("/")
+            if items[6] and items[6] != "NA": #11/7/2017
+                d_parts = items[6].split("/")
                 REPORT_DATE = "%s-%s-%s"%(d_parts[-1],d_parts[0],d_parts[1])
             else:
                 REPORT_DATE = datetime.date.today().strftime("%Y-%m-%d")
 
-            sample_items = [items1[1],p_dic[items1[0]]['ORD_PHYSICIAN_NAME'], p_dic[items1[0]]['ORD_PHYSICIAN_EMAIL'],items1[2],items1[3],REPORT_DATE,
-            p_dic[items1[0]]['BIRTH_DATE'],p_dic[items1[0]]['AGE'],p_dic[items1[0]]['GENDER'],p_dic[items1[0]]['ETHNICITY'],
-            p_dic[items1[0]]['VITAL_STATUS'],p_dic[items1[0]]['ER_STATUS'],p_dic[items1[0]]['PR_STATUS'],p_dic[items1[0]]['HER2_STATUS'],
-            p_dic[items1[0]]['CENTRE'],items1[0],str(count)]
+            sample_items = [items[1],p_dic[items[0]]['ORD_PHYSICIAN_NAME'], p_dic[items[0]]['ORD_PHYSICIAN_EMAIL'],items[2],items[3],REPORT_DATE,
+            p_dic[items[0]]['BIRTH_DATE'],p_dic[items[0]]['AGE'],p_dic[items[0]]['GENDER'],p_dic[items[0]]['ETHNICITY'],
+            p_dic[items[0]]['VITAL_STATUS'],p_dic[items[0]]['ER_STATUS'],p_dic[items[0]]['PR_STATUS'],p_dic[items[0]]['HER2_STATUS'],
+            p_dic[items[0]]['CENTRE'],items[0],str(count)]
             if args.debug:
                 print (len(sample_items))
             new_line = ",".join(sample_items)
-            if args.debug:
-                print (new_line)
+            print (new_line)
             of.write("%s\n"%(new_line))
             count += 1
 
